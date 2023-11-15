@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+from keras.models import load_model
+from keras.preprocessing import image
+import numpy as np
 
 modelo_ruta = 'modelo_deteccion_edad.h5'
 model = load_model(modelo_ruta)
