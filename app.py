@@ -1,9 +1,10 @@
 import streamlit as st
-import pandas as pd
 from keras.models import load_model
-from keras.preprocessing import image
+from keras.preprocessing.image import img_to_array, load_img
 import numpy as np
+from PIL import Image  # Añadir importación para Image
 
+# Cargar el modelo
 modelo_ruta = 'modelo_deteccion_edad.h5'
 model = load_model(modelo_ruta)
 
@@ -11,33 +12,27 @@ st.title("Age Detection")
 
 uploaded_file = st.file_uploader("Cargar una imagen", type=["jpg", "jpeg", "png"])
 
-def extract_feature(image):
+def extract_feature(img):
     features = []
-    img = load_img(image, grayscale=True)
     img = img.resize((128, 128), Image.ANTIALIAS)
-    img = np.array(img)
+    img = img_to_array(img)  
+    img = np.expand_dims(img, axis=0) 
     features.append(img)
-
-    features = np.array(features)
-    features = features.reshape(len(features), 128, 128, 1)
+    features = np.array(features) / 255.0  
     return features
-  
+
 def age_range(edad_predicha):
     rango_inferior = edad_predicha - 2
     rango_superior = edad_predicha + 2
-
-    print(f"Age between {rango_inferior} and {rango_superior} years:")
+    print(f"Edad entre {rango_inferior} y {rango_superior} años.")
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
     sujeto = extract_feature(img)
-    sujeto = sujeto/255.0
 
-    pred = model.predict(sujeto.reshape(1, 128, 128, 1))
-    pred_gender = gender_dict[round(pred[0][0][0])]
-    pred_age = round(pred[1][0][0])
-    print("Predicted Gender:", pred_gender)
+    pred = model.predict(sujeto)
+    pred_age = round(pred[0][0])
+    print("Edad predicha:", pred_age)
     age_range(pred_age)
-    st.image(img)
 
-
+    st.image(img, caption="Imagen cargada", use_column_width=True)
