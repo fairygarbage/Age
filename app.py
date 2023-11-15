@@ -2,7 +2,7 @@ import streamlit as st
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array, load_img
 import numpy as np
-from PIL import Image  # Añadir importación para Image
+from PIL import Image
 
 # Cargar el modelo
 modelo_ruta = 'modelo_deteccion_edad.h5'
@@ -17,7 +17,6 @@ def extract_feature(img):
     img_array = img_to_array(img)  
     img_array = np.expand_dims(img_array, axis=0) 
     return img_array
-
 
 def age_range(edad_predicha):
     rango_inferior = edad_predicha - 2
