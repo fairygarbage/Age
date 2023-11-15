@@ -1,9 +1,7 @@
 import streamlit as st
 import pandas as pd
-from keras.models import load_model
 
 modelo_ruta = 'modelo_deteccion_edad.h5'
-
 model = load_model(modelo_ruta)
 
 st.title("Age Detection")
