@@ -17,8 +17,7 @@ def extract_feature(img):
     img = img.resize((128, 128), Image.ANTIALIAS)
     img = img_to_array(img)  
     img = np.expand_dims(img, axis=0) 
-    features = features.reshape(len(features), 128, 128, object)  
-    return features
+    return img
 
 def age_range(edad_predicha):
     rango_inferior = edad_predicha - 2
