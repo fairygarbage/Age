@@ -13,11 +13,11 @@ st.title("Age Detection")
 uploaded_file = st.file_uploader("Cargar una imagen", type=["jpg", "jpeg", "png"])
 
 def extract_feature(img):
-    features = []
     img = img.resize((128, 128), Image.ANTIALIAS)
-    img = img_to_array(img)  
-    img = np.expand_dims(img, axis=0) 
-    return img
+    img_array = img_to_array(img)  
+    img_array = np.expand_dims(img_array, axis=0) 
+    return img_array
+
 
 def age_range(edad_predicha):
     rango_inferior = edad_predicha - 2
