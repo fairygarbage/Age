@@ -15,15 +15,12 @@ st.title("Age Detection")
 uploaded_file = st.file_uploader("Cargar una imagen", type=["jpg", "jpeg", "png"])
 
 def extract_feature(image):
-    features = []
-    img = load_img(image, grayscale=True)
-    img = img.resize((128, 128), Image.LANCZOS)
-    img = np.array(img)
-    features.append(img)
+    img = image.resize((128, 128), Image.LANCZOS)
+    img_array = img_to_array(img)
+    img_array = img_array.mean(axis=-1, keepdims=True)  # Convertir a escala de grises
+    img_array = img_array / 255.0  # Normalizar valores al rango [0, 1]
+    return img_array
 
-    features = np.array(features)
-    features = features.reshape(len(features), 128, 128, 1)
-    return img
 
 def age_range(edad_predicha):
     rango_inferior = edad_predicha - 2
@@ -33,12 +30,12 @@ def age_range(edad_predicha):
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
     sujeto = extract_feature(img)
-    sujeto = sujeto/255.0
-
-    pred = model.predict(sujeto.reshape(1, 128, 128, 1))
-    pred_gender = gender_dict[round(pred[0][0][0])]
-    pred_age = round(pred[1][0][0])
-    print("Predicted Gender:", pred_gender)
+    sujeto = sujeto.reshape((1, 128, 128, 1))  
+    pred = model.predict(sujeto)
+    pred_gender = gender_dict[round(pred[0][0])]
+    pred_age = round(pred[0][1])
+    st.write("Predicted Gender:", pred_gender)
+    st.write("Predicted Age:", pred_age)
     age_range(pred_age)
 
     st.image(img, caption="Imagen cargada", use_column_width=True)
