@@ -30,8 +30,8 @@ if uploaded_file is not None:
     sujeto = extract_feature(img)
     sujeto = sujeto.reshape((1, 128, 128, 1))  # Agregar dimensión para el modelo
     pred = model.predict(sujeto)
-    pred_gender = gender_dict[round(pred[0][0])]
-    pred_age = round(pred[0][1])
+    pred_gender = gender_dict[round(pred[0][0][0])]
+    pred_age = round(pred[1][0][0])
     st.write("Predicted Gender:", pred_gender)
     st.write("Predicted Age:", pred_age)
     age_range(pred_age)
