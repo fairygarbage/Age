@@ -2,7 +2,6 @@ from keras.models import load_model
 from keras.preprocessing.image import img_to_array, load_img
 import numpy as np
 from PIL import Image
-import matplotlib.pyplot as plt
 from PIL import Image, ImageFilter
 import streamlit as st
 
